@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>handle</title>
+    <!--    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./public/js/utils.js"></script>
+</head>
+<body>
+<div id="app">
+
+    <div>
+        {{showTag}}
+        <video
+            v-show="showTag === 1"
+            ref="1"
+            src="./public/video/down_kaichang.mp4"
+            @ended="handleClick(2)"
+            muted
+        ></video>
+        <video
+            v-show="showTag === 2"
+            ref="2"
+            src="./public/video/down_kaichang2.mp4"
+            @ended="handleClick(3)"
+            muted
+        ></video>
+        <video
+            v-show="showTag === 3"
+            ref="3"
+            src="./public/video/down_kaichang3.mp4"
+            loop
+            muted
+        ></video>
+        <button @click="handleClick(1)">1111</button>
+        <button @click="handleClick(2)">222</button>
+        <button @click="handleClick(3)">333</button>
+
+
+    </div>
+
+</div>
+<script>
+    // import { storageSet } from './public/js/utils.js'
+    const kaichang1 = './public/video/down_kaichang.mp4'
+    const kaichang2 = './public/video/big_1.mp4'
+
+    let app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!',
+            showTag: 1,
+            videoSrc: kaichang1,
+            flag: true,
+            show: true
+        },
+        methods: {
+            handleClick (args) {
+                console.log(args, this.$refs[args])
+
+
+                storageSet('a', (new Date()).valueOf())
+                this.showTag = args
+                this.$refs[args].play()
+                this.handleChangeUrl()
+            },
+            handleChangeUrl() {
+                this.videoSrc === kaichang2 ? this.videoSrc = kaichang1 : this.videoSrc = kaichang2
+            }
+        },
+        beforeCreate () {
+            storageSet('handle', (new Date()).valueOf())
+        },
+        created () {
+            this.videoSrc = kaichang1
+            storageSet('a', (new Date()).valueOf())
+        }
+    })
+</script>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    html, body{
+        width: 100%;
+        height: 100%;
+        /*background: black;*/
+    }
+    #app {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    video {
+        width: 100%;
+        background: black;
+    }
+    button {
+        /*position: absolute;*/
+    }
+    p {
+        color: red;
+    }
+</style>
+</body>
+</html>
